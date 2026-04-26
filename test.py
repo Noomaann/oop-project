@@ -1,99 +1,101 @@
-from abc import ABC,abstractmethod
+# OOP Practice Project
 
-class Product(ABC):
+from abc import ABC, abstractmethod
 
-    def __init__(self,id,stock,price):
-        self.__product_id = id
-        self.__stock = stock
-        self.__base_price = price
+class Payment(ABC):
 
-    #getter
-    def get_stock(self):
-        return self.__stock
+    @abstractmethod
+    def process_payment(self):
+        pass
     
-    def get_price(self):
-        return self.__base_price
+    @abstractmethod
+    def calculate_discount(self):
+        pass
 
-    #setter
-    def set_stock(self,amount):
-        if(amount <= 0):
-            print("You Entered Invalid Amount of Stock")
-        else:
-            self.__stock+=amount
+
+class Product(Payment):
+    def __init__(self,name,id,price):
+        self.__name = name
+        self.__id = id
+        self.__price = price
+    
+
+    # Getter
+    def get_name(self):
+        return self.__name
+    
+    def get_id(self):
+        return self.__id
+
+    def get_price(self):
+        return self.__price
+    
+
+    #Setter
+    def set_name(self,name):
+        if(len(name) == 0):
+            print("Empty Name is not Acceptable")
+        else: self.__name = name
+    
+    def set_id(self,id):
+        if(id <= None):
+            print("You Enter Empty/Invalid id")
+        else: self.__id = id
     
     def set_price(self,price):
-        if(price < 0):
-            print("You Entered Invalid ammount of Price")
-        else:
-            self.__base_price = price
-
-
-    @abstractmethod
-    def show_details(self):
-        pass
-    
-    @abstractmethod
-    def calculate_discount(self):
-        pass
-
-
-
-class Saree(Product):
-    def __init__(self,id,stock,price,fabric_type):
-        super().__init__(id,stock,price)
-        self.__febric_type = fabric_type
-    
-    def show_details(self):
-        print(f"Saree ache {self.get_stock()} Piece")
-    
-    def calculate_discount(self):
-        print(f"Saree er upore 5% Discount deyar por apnr Taka ashe {(self.get_price())-self.get_price()*0.05} Taka")
-
+        if(price <= 0 ):
+            print("You Entered Invalid Price")
+        else: self.__price = price
         
 
+    def process_payment(self):
+        print("Process Done for Product class.")
 
-
-class Panjabi(Product):
-    def __init__(self, id, stock, price,size):
-        super().__init__(id, stock, price)
-        self.__size = size 
-
-    def show_details(self):
-        print(f"Panjabi ache {self.get_stock()} Piece")
     
     def calculate_discount(self):
-        print(f"Panjabi er upore 10% Discount deyar por apnr Taka ashe {(self.get_price())-self.get_price()*0.1} Taka")
+        print(f"You got 5% of discount and your Total price is {self.get_price()}-{self.get_price()*0.05} taka")
 
 
+class Electronics(Product):
+    def __init__(self, name, id, price,warranty):
+        super().__init__(name, id, price)
+        self.__warranty = warranty
 
-class ThreePiece(Product):
-    def __init__(self,id,stock,price,color):
-        super().__init__(id,stock,price)
-        self.__color = color
     
-    def show_details(self):
-        print(f"Three Piece ache {self.get_stock()} Piece")
-
-    def calculate_discount(self):
-        print(f"Three Piece er upore Flat 300 taka Discount deyar por apnr Taka ashe {(self.get_price())-300} Taka")
-
+    def process_payment(self):
+        print("Process Done for Electronics class.")\
         
+    def calculate_discount(self):
+        price = self.get_price()
+        discounted_price = price - (price * 0.1)
+        print(f"Electronics: 10% discount applied. Total: {discounted_price} taka")
 
-# --- অবজেক্ট তৈরি এবং টেস্ট করা ---
 
-objA = Saree(101, 10, 2000, "Jamdani")
-objB = Panjabi(102, 12, 1500, 40)
-objC = ThreePiece(103, 15, 2500, "Red")
+class Clothing(Product):
+    def __init__(self, name, id, price,size):
+        super().__init__(name, id, price)
+        self.__size = size
+    
+    def process_payment(self):
+        print("Process Done for Clothing class.")
 
-print("--- ইনভেন্টরি ডিটেইলস ---")
-objA.show_details()
-objA.calculate_discount()
+    def calculate_discount(self):
+        price = self.get_price()
+        discounted_price = price - (price * 0.2)
+        print(f"Clothing: 20% discount applied. Total: {discounted_price} taka")
 
-print("\n")
-objB.show_details()
-objB.calculate_discount()
 
-print("\n")
 
-objC.show_details()
-objC.calculate_discount()
+# object 
+
+elec = Electronics("Laptop", 457, 80000, "1 Year")
+cloth = Clothing("Shirt", 441, 1500, 42)
+
+elec.process_payment()
+elec.calculate_discount()
+
+print("-" * 20)
+
+cloth.process_payment()
+cloth.calculate_discount()
+
